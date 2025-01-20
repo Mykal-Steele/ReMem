@@ -1,6 +1,7 @@
 # Image Display with Google Drive Integration
 
-Looking to memorize formulas (or anything else)? This tool shows you the formula, and before you can continue using your computer, you’ll need to write it down and upload it to your Google Drive folder.
+### "Looking to memorize formulas (or anything else)? This tool shows you the formula, and before you can continue using your computer, you’ll need to write it down and upload it to your Google Drive folder."
+
 The program displays images randomly from a folder on your computer in fullscreen mode. One image is shown at a time, and the program will wait for new files to be uploaded to a designated Google Drive folder. Once a new file is uploaded, it will wait an hour before starting a new cycle of image displays.
 
 ## What You Need
