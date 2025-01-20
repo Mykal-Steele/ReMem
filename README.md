@@ -1,9 +1,10 @@
 # Image Display with Google Drive Integration
 
-## "Formula Memory Tool with Google Drive Sync"
+## Formula Memory Tool with Google Drive Sync
 
-#### "Want to memorize formulas (or anything else)? This tool shows you a random formula, and before you can continue, you'll need to write it down and upload it to your Google Drive."
-The program displays images one at a time, in fullscreen mode. It'll wait for new files to be uploaded to a designated Google Drive folder, and once a new file is added, it pauses for an hour before starting the next cycle of displays.
+#### Want to memorize formulas (or anything else)? This tool shows you a random formula, and before you can continue, you'll need to write it down and upload it to your Google Drive.
+
+The program displays images one at a time, in fullscreen mode. It will wait for new files to be uploaded to a designated Google Drive folder, and once a new file is added, it pauses for an hour before starting the next cycle of displays.
 
 ## What You Need
 
