@@ -125,5 +125,4 @@ pip install tk  # For Windows users
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/Mykal-Steele/ReMem/blob/main/LICENSE) file for details.
-```
 
