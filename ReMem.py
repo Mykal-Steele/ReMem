@@ -9,6 +9,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google.auth.transport.requests import Request
 from dotenv import load_dotenv
+from PIL import Image, ImageTk
 
 
 
@@ -37,6 +38,9 @@ class ImageWindow:
         self.root = Tk()
         self.root.title("Current Prompt Image")
         
+        # Normalize the image path
+        image_path = os.path.normpath(image_path)  # Ensure correct path format
+        
         # Make window fullscreen and always on top
         self.root.attributes('-fullscreen', True)
         self.root.attributes('-topmost', True)
@@ -44,22 +48,23 @@ class ImageWindow:
         # Disable window close button
         self.root.protocol("WM_DELETE_WINDOW", lambda: None)
         
-        # Load and display image
-        img = PhotoImage(file=image_path)
+        # Open image using Pillow and convert it for Tkinter
+        img = Image.open(image_path)
+        img = img.resize((self.root.winfo_screenwidth(), self.root.winfo_screenheight()), Image.Resampling.LANCZOS)
         
-        # Calculate scaling factors for fullscreen
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
+        # Convert image to Tkinter format
+        img_tk = ImageTk.PhotoImage(img)
         
         # Create label with black background
-        label = Label(self.root, image=img, bg='black')
+        label = Label(self.root, image=img_tk, bg='black')
         label.place(relx=0.5, rely=0.5, anchor='center')
         
         # Keep reference to image to prevent garbage collection
-        label.image = img
+        label.image = img_tk
         
         # Start window in separate thread
         self.root.mainloop()
+
 
 def authenticate_google_drive():
     creds = None
