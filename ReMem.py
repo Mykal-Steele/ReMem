@@ -68,19 +68,54 @@ class ImageWindow:
 
 def authenticate_google_drive():
     creds = None
+    # Try to load existing credentials
     if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
+        try:
+            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        except Exception as e:
+            print(f"Error loading token.json: {e}")
+            creds = None
+
+    # Check if credentials are valid or can be refreshed
+    if creds:
+        try:
+            # Check if credentials are expired
+            if creds.expired:
+                if creds.refresh_token:
+                    try:
+                        creds.refresh(Request())
+                        print("Successfully refreshed expired credentials")
+                    except Exception as e:
+                        print(f"Error refreshing token: {e}")
+                        creds = None
+                else:
+                    print("Credentials expired and no refresh token available")
+                    creds = None
+            else:
+                print("Using existing valid credentials")
+        except Exception as e:
+            print(f"Error checking credentials: {e}")
+            creds = None
+
+    # If no valid credentials, perform full authentication
+    if not creds:
+        try:
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
             creds = flow.run_local_server(port=8080)
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+            # Save the credentials for future use
+            try:
+                with open('token.json', 'w') as token:
+                    token.write(creds.to_json())
+                print("Successfully saved new credentials to token.json")
+            except Exception as e:
+                print(f"Error saving token: {e}")
+        except Exception as e:
+            print(f"Error during authentication flow: {e}")
+            raise
+
     return build('drive', 'v3', credentials=creds)
+
 
 def get_file_list(service, folder_id):
     try:
@@ -156,7 +191,7 @@ def main():
                     display_thread.join()  # Wait for window thread to finish
                     
                     print("Starting one hour wait period...")
-                    time.sleep(3600)  
+                    time.sleep(15)  
                     print("One hour has passed. Starting next cycle...\n")
                     break
 
